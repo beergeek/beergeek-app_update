@@ -1,0 +1,14 @@
+{
+  "name": "beergeek-app_update",
+  "version": "0.1.0",
+  "author": "beergeek",
+  "summary": "Manages application code base updates via MCO",
+  "license": "Apache 2.0",
+  "source": "https://github.com/beergeek/beergeek-app_update.git",
+  "project_page": "https://github.com/beergeek/beergeek-app_update",
+  "issues_url": "https://github.com/beergeek/beergeek-app_update/issues",
+  "dependencies": [
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+  ]
+}
+
