@@ -7,7 +7,7 @@ describe 'app_update' do
     it {
       should contain_file('app_update.ddl').with(
         'ensure'  => 'file',
-        'path'    => '/opt/puppet/libexec/mcollective/mcollective/agent/app_update.rb',
+        'path'    => '/opt/puppet/libexec/mcollective/mcollective/agent/app_update.ddl',
         'owner'   => 'root',
         'group'   => 'root',
         'mode'    => '0644',

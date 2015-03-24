@@ -50,7 +50,7 @@ class app_update {
     notify => Service[$mco_svc],
   }
 
-  $mco_dir = '/opt/puppet/libexec/mcollect/mcollective/agent'
+  $mco_dir = '/opt/puppet/libexec/mcollective/mcollective/agent'
 
   file { 'app_update.ddl':
     ensure => file,
@@ -60,7 +60,7 @@ class app_update {
 
   file { 'app_update.rb':
     ensure => file,
-    path   => "${mco_dir}/app_update.ddl",
+    path   => "${mco_dir}/app_update.rb",
     source => 'puppet:///modules/app_update/app_update.rb',
   }
 
