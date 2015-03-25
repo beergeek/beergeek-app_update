@@ -13,7 +13,7 @@ action "deploy_app_update", :description => "deploy_app_update" do
   input   :service,
           :description  => "Service to stop/start",
           :prompt       => "Service",
-          :type         => string,
+          :type         => :string,
           :validation   => '^[a-zA-Z\-_\d]+$',
           :optional     => false,
           :maxlength    => 30
