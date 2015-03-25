@@ -57,9 +57,9 @@ module MCollective
       action 'deploy_app_update' do
         begin
           disable = disable_puppet
-          kill_svc = service_manage('crond', 'stopped')
+          kill_svc = service_manage(request['service'], 'stopped')
 	  Log.info('We would do our code base copy here')
-	  start_svc = service_manage('crond', 'running')
+	  start_svc = service_manage(request['service'], 'running')
           enable = enable_puppet
           reply[:exitcode] = 0
 	  reply[:out] ='done'
