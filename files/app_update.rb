@@ -45,11 +45,11 @@ module MCollective
       def service_manage(svc_name, cmd)
         begin
           x = ::Puppet::Resource.new('service', svc_name, :parameters => {'ensure' => cmd})
-	  result = ::Puppet::Resource.indirection.save(x)
-	  Log.info("#{cmd} the service of #{svc_name}")
+	        result = ::Puppet::Resource.indirection.save(x)
+	        Log.info("#{cmd} the service of #{svc_name}")
         rescue => e
           Log.debug("Issue with performing #{cmd} on #{svc_name} service")
-	  reply.fail(reply[:status] = "Could not manage service #{svc_name}: %s" % e.to_s)
+	        reply.fail(reply[:status] = "Could not manage service #{svc_name}: %s" % e.to_s)
           return -1
         end
       end
@@ -58,11 +58,11 @@ module MCollective
         begin
           disable = disable_puppet
           kill_svc = service_manage(request['service'], 'stopped')
-	  Log.info('We would do our code base copy here')
-	  start_svc = service_manage(request['service'], 'running')
+	        Log.info('We would do our code base copy here')
+	        start_svc = service_manage(request['service'], 'running')
           enable = enable_puppet
           reply[:exitcode] = 0
-	  reply[:out] ='done'
+	        reply[:out] ='done'
         rescue => e
           enable = enable_puppet
         end
