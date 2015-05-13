@@ -54,7 +54,6 @@ module MCollective
           service_manage(request[:service], 'stopped')
           Log.info('We would do our code base copy here')
           service_manage(request[:service], 'running')
-          enable_puppet
           reply[:exitcode] = 0
           reply[:out] ='done'
         rescue => e
