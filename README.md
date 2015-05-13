@@ -15,65 +15,92 @@
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
+A module to manage an MCollective Agent and Application to perform Application Code Base Updates.
+This is demonstration code.
 
 ## Module Description
 
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+Manages MCollective Agent and Application.
+The MCO Agent should be utilised on any application server.
+The MCO Application should be on the build server, such as Bamboo or Artifactory.
 
 ## Setup
 
 ### What app_update affects
 
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
+Manages the MCO Agent and Application; restarts the MCollective service as required.
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+Does not use pluginsync as we do not want all nodes to have these agents or applications.
 
 ### Beginning with app_update
 
-The very basic steps needed for a user to get the module up and running.
+By default the MCO Agent is managed and not the MCO application.
 
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+For PE, create a Node Group in the Classifier and assign the `app_update` class.
+A further Node Group maybe created for the build server, and this should also be assigned the 
+`app_update` class, but the `application` parameter should be `true` and the `agent` parameter
+should be `false`.
+
+NOTE: If the `agent` and `application` parameters are `false` the agents, applications and DDL files will be removed.
+
+Alternatively: 
+```puppet
+    # for application servers
+    class { 'app_update':
+      application => false,
+      agent       => true,
+    }
+
+    # for build servers
+    class { 'app_update':
+      application => true,
+      agent       => false,
+    }
+```
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
-
 ## Reference
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+### Classes
+
+#### app_update
+
+##### `agent`
+Boolean value to determine if the MCO agent is installed and managed.
+A `false` value will remove the agent.
+Default is `true`.
+
+##### `application`
+Boolean value to determine if the MCO application is installed and managed.
+A `false` value will remove the application.
+Default is `false`.
+
+## MCO Usage
+
+As the correct user (peadmin or dashbaord on PE) issue the following command:
+```puppet
+    mco app_update --service NAME_OF_SERVICE
+
+    or
+
+    mco app_update --s NAME_OF_SERVICE
+```
+
+Note this is demonstration code.  It will perform the following on the node:
+* Disable Puppet
+* Stop the desired service
+* Make a log entry (this is where the actual working code would perform)
+* Start the service
+* Enable Puppet
 
 ## Limitations
 
-This is where you list OS compatibility, version compatibility, etc.
+Used and tested on Cetnos/RHEL6
 
 ## Development
 
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
+## Release Notes/Contributors/Etc
 
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
