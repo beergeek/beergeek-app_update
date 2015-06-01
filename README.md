@@ -98,7 +98,7 @@ Note this is demonstration code.  It will perform the following on the node:
 
 ## Limitations
 
-Used and tested on Cetnos/RHEL6
+Used and tested on CentOS/RHEL6
 
 ## Development
 
