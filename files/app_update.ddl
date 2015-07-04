@@ -17,4 +17,25 @@ action "deploy_app_update", :description => "deploy_app_update" do
           :validation   => '^[a-zA-Z\-_\d]+$',
           :optional     => false,
           :maxlength    => 30
+  input   :host,
+          :description  => "Hostname BuildAPIClient uses to retrieve code base",
+          :prompt       =>  "BuildAPIClient Host",
+          :type         =>  :string,
+          :validation   =>  '^[a-zA-Z\-_\.\d]+$',
+          :optional     => false,
+          :maxlength    => 50
+  input   :app,
+          :description  => "Name of the application to update code base",
+          :prompt       => "Application",
+          :type         => :string,
+          :validation   =>  '^[a-zA-Z\-_\.\d]+$',
+          :optional     => false,
+          :maxlength    => 50
+  input   :version,
+          :description  => "Version to upgrade to, use semver or 'latest'",
+          :prompt       => "Version",
+          :type         => :string,
+          :validation   =>  '^[a-zA-Z\-_\.\d]+$',
+          :optional     => false,
+          :maxlength    => 20
 end

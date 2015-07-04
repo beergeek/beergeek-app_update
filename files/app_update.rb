@@ -20,21 +20,16 @@ module MCollective
         @puppet_agent = Util::PuppetAgentMgr.manager(configfile, @puppet_service)
       end
 
-      def disable_puppet
+      def control_puppet(state = 'enable')
         begin
           Log.info('Disabling Puppet')
-          agent_msg = @puppet_agent.disable!
+          if state == 'disable'
+            agent_msg = @puppet_agent.disable!
+          else
+            agent_msg = @puppet_agent.enable!
+          end
         rescue => e
           raise "Could not disable Puppet: #{e.to_s}"
-        end
-      end
-
-      def enable_puppet
-        begin
-          Log.info('Enabling Puppet')
-          agent_msg = @puppet_agent.enable!
-        rescue => e
-          reply.fail(reply[:status] = e.to_s)
         end
       end
 
@@ -50,17 +45,18 @@ module MCollective
 
       action 'deploy_app_update' do
         begin
-          disable_puppet
+          control_puppet('disable')
           service_manage(request[:service], 'stopped')
-          Log.info('We would do our code base copy here')
+          Log.info("BuildAPIClient -i /home/buildapiclient/.credentials https://#{request[:host]}:1234/#{request[:app]}/#{request[:version]}")
           service_manage(request[:service], 'running')
           reply[:exitcode] = 0
-          reply[:out] ='done'
         rescue => e
-          Log.err(e.to_s)
+          Log.error(e.to_s)
           reply.fail(reply[:status] = e.to_s)
         ensure
-          enable = enable_puppet
+          control_puppet('enable')
+          # This would call the BuildAPIClient to get the current onbaord codebase version
+          reply[:out] = 'Local code base version: xyz'
         end
       end
     end
