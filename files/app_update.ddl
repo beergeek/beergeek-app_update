@@ -38,4 +38,11 @@ action "deploy_app_update", :description => "deploy_app_update" do
           :validation   =>  '^[a-zA-Z\-_\.\d]+$',
           :optional     => false,
           :maxlength    => 20
+  input   :destination,
+          :description  => "Destination for code on local file system",
+          :prompt       => "Destination",
+          :type         => :string,
+          :validation   =>  '^[a-zA-Z\-_\.\d\/]+$',
+          :optional     => false,
+          :maxlength    => 100
 end
