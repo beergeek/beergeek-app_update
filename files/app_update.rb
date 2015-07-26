@@ -1,3 +1,9 @@
+#
+# MCO Agent to update application code base
+# Written by Brett Gray
+# brett.gray@puppetlabs.com
+#
+
 $puppet_application_name = :agent
 require 'puppet'
 

@@ -1,3 +1,9 @@
+#
+# MCO Agent to update application code base
+# Written by Brett Gray
+# brett.gray@puppetlabs.com
+#
+
 module MCollective
   class Application
     class App_update < MCollective::Application
