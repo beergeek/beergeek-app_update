@@ -43,10 +43,10 @@ class app_update (
   validate_bool($application)
 
   if $aio_agent_version {
-    $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective/agent'
+    $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective'
     $mco_svc = 'mcollective'
   }  else {
-    $mco_dir = '/opt/puppet/libexec/mcollective/mcollective/agent'
+    $mco_dir = '/opt/puppet/libexec/mcollective/mcollective'
     $mco_svc = 'pe-mcollective'
   }
 
