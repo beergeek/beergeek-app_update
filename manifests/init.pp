@@ -42,6 +42,14 @@ class app_update (
   validate_bool($agent)
   validate_bool($application)
 
+  if $aio_agent_version {
+    $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective/agent'
+    $svc = 'mcollective'
+  }  else
+    $mco_dir = '/opt/puppet/libexec/mcollective/mcollective/agent'
+    $svc = 'pe-mcollective'
+  }
+
   if $::pe_version {
     $mco_svc = 'pe-mcollective'
   } else {
@@ -55,7 +63,6 @@ class app_update (
     notify => Service[$mco_svc],
   }
 
-  $mco_dir = '/opt/puppet/libexec/mcollective/mcollective'
 
   file { 'app_update.ddl':
     ensure => file,
