@@ -28,7 +28,7 @@ module MCollective
 
       def control_puppet(state = 'enable')
         begin
-          Log.info('Disabling Puppet')
+          Log.info("#{state} Puppet")
           if state == 'disable'
             agent_msg = @puppet_agent.disable!
           else
