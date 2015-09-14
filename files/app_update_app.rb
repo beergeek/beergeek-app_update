@@ -38,7 +38,11 @@ module MCollective
       def main
         mc = rpcclient('app_update')
 
-        printrpc mc.deploy_app_update(:service => configuration[:service],:host => configuration[:host],:app => configuration[:app],:version => configuration[:version], :destination => configuration[:destination], :options => options)
+        output = mc.deploy_app_update(:service => configuration[:service],:host => configuration[:host],:app => configuration[:app],:version => configuration[:version], :destination => configuration[:destination], :options => options)
+
+        output.each do |result|
+          puts result[:data][:out]
+        end
 
         printrpcstats
       end
