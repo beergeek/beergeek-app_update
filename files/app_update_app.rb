@@ -14,11 +14,6 @@ module MCollective
               :arguments   => ['-s SERVICE','--service SERVICE'],
               :type        => String,
               :required    => true
-      option  :host,
-              :description  => 'Host where the BuildAPIClient get code base',
-              :arguments   => ['-o HOST','--host HOST'],
-              :type        => String,
-              :required    => true
       option  :app,
               :description  => 'Name of the application to update code base',
               :arguments   => ['-a APPLICATION','--application APPLICATION'],
@@ -29,16 +24,11 @@ module MCollective
               :arguments   => ['-p VERSION','--app_version VERSION'],
               :type        => String,
               :required    => true
-      option  :destination,
-              :description  => 'Destination for code on local file system',
-              :arguments   => ['-d DESTINATION','--dest DESTINATION'],
-              :type        => String,
-              :required    => true
 
       def main
         mc = rpcclient('app_update')
 
-        output = mc.deploy_app_update(:service => configuration[:service],:host => configuration[:host],:app => configuration[:app],:version => configuration[:version], :destination => configuration[:destination], :options => options)
+        output = mc.deploy_app_update(:service => configuration[:service],:app => configuration[:app],:version => configuration[:version], :options => options)
 
         output.each do |result|
           puts result[:data][:out]

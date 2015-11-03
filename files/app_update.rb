@@ -39,9 +39,9 @@ module MCollective
         end
       end
 
-      def service_manage(svc_name, cmd)
+      def resource_manage(resource_type, resource_name, cmd_hash)
         begin
-          x = ::Puppet::Resource.new('service', svc_name, :parameters => {'ensure' => cmd})
+          x = ::Puppet::Resource.new(resource_type, resource_name, :parameters => cmd_hash)
           result = ::Puppet::Resource.indirection.save(x)
           Log.info("#{cmd} the service of #{svc_name}: #{result}")
         rescue => e
@@ -52,9 +52,11 @@ module MCollective
       action 'deploy_app_update' do
         begin
           control_puppet('disable')
-          service_manage(request[:service], 'stopped')
-          Log.info("BuildAPIClient -i /home/buildapiclient/.credentials https://#{request[:host]}:1234/#{request[:app]}/#{request[:version]} #{request[:destination]}")
-          service_manage(request[:service], 'running')
+          resource_manage('service', request[:service], {'ensure' => 'stopped'})
+          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '1', 'gpgcheck' => '0', 'baseurl' => 'http://centos6e.pdx.puppetlabs.vm/'})
+          resource_manage('package', request[:app], {'ensure' => request[:version]})
+          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '0', 'gpgcheck' => '0', 'baseurl' => 'http://centos6e.pdx.puppetlabs.vm/'})
+          resource_manage('service', request[:service], {'ensure' => 'running'})
           reply[:exitcode] = 0
           # This would call the BuildAPIClient to get the current onbaord codebase version
           reply[:out] = 'Local code base version: xyz'
