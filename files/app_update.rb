@@ -43,9 +43,9 @@ module MCollective
         begin
           x = ::Puppet::Resource.new(resource_type, resource_name, :parameters => cmd_hash)
           result = ::Puppet::Resource.indirection.save(x)
-          Log.info("#{cmd} the service of #{svc_name}: #{result}")
+          Log.info("#{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{result}")
         rescue => e
-          raise "Could not manage service #{svc_name}: #{e.to_s}"
+          raise "Could not manage resource of #{resource_type} with the title #{resource_name}: #{e.to_s}"
         end
       end
 
