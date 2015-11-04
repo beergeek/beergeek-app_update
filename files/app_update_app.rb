@@ -29,9 +29,13 @@ module MCollective
         mc = rpcclient('app_update')
 
         output = mc.deploy_app_update(:service => configuration[:service],:app => configuration[:app],:version => configuration[:version], :options => options)
+        sender_width = output.map{|s| s[:sender]}.map{|s| s.length}.max + 3
 
         output.each do |result|
-          puts result[:data][:out]
+          pattern = "%%%ds: %%s" % sender_width
+
+          puts(pattern % [result[:sender], result[:data][:out]])
+          #puts result[:data][:out]
         end
 
         printrpcstats

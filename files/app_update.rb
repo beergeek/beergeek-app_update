@@ -21,7 +21,7 @@ module MCollective
         @puppet_command = @config.pluginconf.fetch("puppet.command", "puppet agent")
         @puppet_service = @config.pluginconf.fetch("puppet.windows_service", "puppet")
         @puppet_splaylimit = Integer(@config.pluginconf.fetch("puppet.splaylimit", 30))
-        @puppet_splay = @config.pluginconf.fetch("puppet.splay", "true")
+        @puppet_splay = @config.pluginconf.fetch("puppet.splay", "false")
 
         @puppet_agent = Util::PuppetAgentMgr.manager(configfile, @puppet_service)
       end
@@ -59,7 +59,12 @@ module MCollective
           resource_manage('service', request[:service], {'ensure' => 'running'})
           reply[:exitcode] = 0
           # This would call the BuildAPIClient to get the current onbaord codebase version
-          reply[:out] = 'Local code base version: xyz'
+          x = ::Puppet::Resource.indirection.find("package/#{request[:app]}")
+          if x[:ensure] != 'absent'
+            reply[:out] = x[:ensure]
+          else
+            reply[:out] = 'absent'
+          end
         rescue => e
           Log.error(e.to_s)
           reply.fail(reply[:status] = e.to_s)
