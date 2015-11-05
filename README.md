@@ -82,17 +82,29 @@ Default is `false`.
 
 As the correct user (peadmin or dashbaord on PE) issue the following command:
 ```puppet
-    mco app_update --service NAME_OF_SERVICE
+    mco app_update --service NAME_OF_SERVICE --app NAME_OF_APP_PACKAGE --app_version VERSION_OF_APP_PACKAGE
 
     or
+    mco app_update --s NAME_OF_SERVICE -a NAME_OF_APP_PACKAGE -p VERSION_OF_APP_PACKAGE
 
-    mco app_update --s NAME_OF_SERVICE
+    # Example
+    mco app_update -s httpd -a website_code_base -p 1.0.0-1 -v -F pp_role=web_server
+```
+
+```puppet
+  mco app_update --help
+
+  Update code base for an application
+  Application Options
+      -s, --service SERVICE            Service to stop and start
+      -a, --application APPLICATION    Name of the application to update code base
+      -p, --app_version VERSION        Version to upgrade to, use semver or 'latest'
 ```
 
 Note this is demonstration code.  It will perform the following on the node:
 * Disable Puppet
 * Stop the desired service
-* Make a log entry (this is where the actual working code would perform)
+* Download the package
 * Start the service
 * Enable Puppet
 
