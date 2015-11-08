@@ -33,7 +33,7 @@ module MCollective
       def main
         mc = rpcclient('app_update')
 
-        output = mc.deploy_app_update(:service => configuration[:service],:package => configuration[:packahe],:version => configuration[:version],:host => configuration[:host], :options => options)
+        output = mc.deploy_app_update(:service => configuration[:service],:package => configuration[:package],:version => configuration[:version],:host => configuration[:host], :options => options)
         sender_width = output.map{|s| s[:sender]}.map{|s| s.length}.max + 3
 
         output.each do |result|

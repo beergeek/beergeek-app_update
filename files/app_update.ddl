@@ -28,7 +28,7 @@ action "deploy_app_update", :description => "deploy_app_update" do
           :description  => "Name of the package to update code base",
           :prompt       => "Application",
           :type         => :string,
-          :validation   =>  '^[a-zA-Z\-_\.\d]+$',
+          :validation   =>  '^[0-9a-zA-Z\-_\.\d]+$',
           :optional     => false,
           :maxlength    => 50
   input   :version,
