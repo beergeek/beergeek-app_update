@@ -21,7 +21,7 @@ action "deploy_app_update", :description => "deploy_app_update" do
           :description  => "Host URL of repo server uses to retrieve code base",
           :prompt       =>  "Repo Server URL",
           :type         =>  :string,
-          :validation   =>  '^[a-zA-Z/\-_\.\d]+$',
+          :validation   =>  '^[a-zA-Z:\/\-_\.\d]+$',
           :optional     => false,
           :maxlength    => 50
   input   :package,
