@@ -43,10 +43,19 @@ class app_update (
   validate_bool($application)
 
   if $aio_agent_version {
-    $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective'
+    if $os['name'] == 'windows' {
+      $mco_dir = 'C:/ProgramData/puppetlabs/mcollective/plugins/mcollective'
+    } else {
+      $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective'
+    }
     $mco_svc = 'mcollective'
   }  else {
-    $mco_dir = '/opt/puppet/libexec/mcollective/mcollective'
+    if $os['name'] == 'windows' {
+      # This needs updating
+      $mco_dir = 'C:/ProgramData/puppetlabs/mcollective/mcollective'
+    } else {
+      $mco_dir = '/opt/puppet/libexec/mcollective/mcollective'
+    }
     $mco_svc = 'pe-mcollective'
   }
 

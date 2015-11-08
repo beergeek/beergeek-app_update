@@ -14,21 +14,26 @@ module MCollective
               :arguments   => ['-s SERVICE','--service SERVICE'],
               :type        => String,
               :required    => true
-      option  :app,
+      option  :host,
+              :description  => 'Host URL of rep server',
+              :arguments   => ['-o HOST','--host HOST'],
+              :type        => String,
+              :required    => true
+      option  :package,
               :description  => 'Name of the application to update code base',
-              :arguments   => ['-a APPLICATION','--application APPLICATION'],
+              :arguments   => ['-p PACKAGE_NAME','--package PACKAGE_NAME'],
               :type        => String,
               :required    => true
       option  :version,
               :description  => "Version to upgrade to, use semver or 'latest'",
-              :arguments   => ['-p VERSION','--app_version VERSION'],
+              :arguments   => ['-n VERSION','--package_version VERSION'],
               :type        => String,
               :required    => true
 
       def main
         mc = rpcclient('app_update')
 
-        output = mc.deploy_app_update(:service => configuration[:service],:app => configuration[:app],:version => configuration[:version], :options => options)
+        output = mc.deploy_app_update(:service => configuration[:service],:package => configuration[:packahe],:version => configuration[:version],:host => configuration[:host], :options => options)
         sender_width = output.map{|s| s[:sender]}.map{|s| s.length}.max + 3
 
         output.each do |result|

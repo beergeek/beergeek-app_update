@@ -82,13 +82,13 @@ Default is `false`.
 
 As the correct user (peadmin or dashbaord on PE) issue the following command:
 ```puppet
-    mco app_update --service NAME_OF_SERVICE --app NAME_OF_APP_PACKAGE --app_version VERSION_OF_APP_PACKAGE
+    mco app_update --service NAME_OF_SERVICE --package NAME_OF_APP_PACKAGE --package_version VERSION_OF_APP_PACKAGE --host REPO_URL
 
     or
-    mco app_update --s NAME_OF_SERVICE -a NAME_OF_APP_PACKAGE -p VERSION_OF_APP_PACKAGE
+    mco app_update -s NAME_OF_SERVICE -p NAME_OF_APP_PACKAGE -n VERSION_OF_APP_PACKAGE -o REPO_URL
 
     # Example
-    mco app_update -s httpd -a website_code_base -p 1.0.0-1 -v -F pp_role=web_server
+    mco app_update -s httpd -p website_code_base -n 1.0.0-1 -o http://repo_server.local/app/ -F pp_role=web_server
 ```
 
 ```puppet
@@ -97,8 +97,9 @@ As the correct user (peadmin or dashbaord on PE) issue the following command:
   Update code base for an application
   Application Options
       -s, --service SERVICE            Service to stop and start
-      -a, --application APPLICATION    Name of the application to update code base
-      -p, --app_version VERSION        Version to upgrade to, use semver or 'latest'
+      -p, --package PACKAGE            Name of the package to update code base
+      -n, --package_version VERSION    Version to upgrade to, use semver or 'latest'
+      -o, --host HOST_URL              Host URL of rep server
 ```
 
 Note this is demonstration code.  It will perform the following on the node:

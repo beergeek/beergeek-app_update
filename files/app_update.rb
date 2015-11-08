@@ -53,13 +53,13 @@ module MCollective
         begin
           control_puppet('disable')
           resource_manage('service', request[:service], {'ensure' => 'stopped'})
-          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '1', 'gpgcheck' => '0', 'baseurl' => 'http://repo.puppetlabs.vm/'})
-          resource_manage('package', request[:app], {'ensure' => request[:version]})
-          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '0', 'gpgcheck' => '0', 'baseurl' => 'http://repo.puppetlabs.vm/'})
+          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '1', 'gpgcheck' => '0', 'baseurl' => request[:host]})
+          resource_manage('package', request[:package], {'ensure' => request[:version]})
+          resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '0', 'gpgcheck' => '0', 'baseurl' => request[:host]})
           resource_manage('service', request[:service], {'ensure' => 'running'})
           reply[:exitcode] = 0
           # This would call the BuildAPIClient to get the current onbaord codebase version
-          x = ::Puppet::Resource.indirection.find("package/#{request[:app]}")
+          x = ::Puppet::Resource.indirection.find("package/#{request[:package]}")
           if x[:ensure] != 'absent'
             reply[:out] = x[:ensure]
           else

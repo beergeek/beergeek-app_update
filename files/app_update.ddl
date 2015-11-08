@@ -17,8 +17,15 @@ action "deploy_app_update", :description => "deploy_app_update" do
           :validation   => '^[a-zA-Z\-_\d]+$',
           :optional     => false,
           :maxlength    => 30
-  input   :app,
-          :description  => "Name of the application to update code base",
+  input   :host,
+          :description  => "Host URL of repo server uses to retrieve code base",
+          :prompt       =>  "Repo Server URL",
+          :type         =>  :string,
+          :validation   =>  '^[a-zA-Z/\-_\.\d]+$',
+          :optional     => false,
+          :maxlength    => 50
+  input   :package,
+          :description  => "Name of the package to update code base",
           :prompt       => "Application",
           :type         => :string,
           :validation   =>  '^[a-zA-Z\-_\.\d]+$',
