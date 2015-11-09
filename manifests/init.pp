@@ -59,10 +59,28 @@ class app_update (
     $mco_svc = 'pe-mcollective'
   }
 
+  # Root user by OS
+  $root_user = $::operatingsystem ? {
+    'windows' => 'S-1-5-32-544', # Adminstrators
+    default   => 'root',
+  }
+
+  # Root group by OS
+  $root_group = $::operatingsystem ? {
+    'windows' => 'S-1-5-32-544', # Adminstrators
+    default   => 'root',
+  }
+
+  # Root mode by OS
+  $root_mode = $::operatingsystem ? {
+    'windows' => '0664',         # Both user and group need write permission
+    default   => '0644',
+  }
+
   File {
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    owner  => $root_user,
+    group  => $root_group,
+    mode   => $root_mode,
     notify => Service[$mco_svc],
   }
 
