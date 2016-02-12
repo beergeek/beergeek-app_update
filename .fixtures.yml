@@ -1,0 +1,6 @@
+fixtures:
+  symlinks:
+    app_update: "#{source_dir}"
+  repositories:
+    stdlib:
+      repo: "git://github.com/puppetlabs/puppetlabs-stdlib"
