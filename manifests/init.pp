@@ -43,14 +43,14 @@ class app_update (
   validate_bool($application)
 
   if $aio_agent_version {
-    if $os['name'] == 'windows' {
+    if $::os['name'] == 'windows' {
       $mco_dir = 'C:/ProgramData/puppetlabs/mcollective/plugins/mcollective'
     } else {
       $mco_dir = '/opt/puppetlabs/mcollective/plugins/mcollective'
     }
     $mco_svc = 'mcollective'
-  }  else {
-    if $os['name'] == 'windows' {
+  } else {
+    if $::osfamily == 'windows' {
       # This needs updating
       $mco_dir = 'C:/ProgramData/puppetlabs/mcollective/mcollective'
     } else {
@@ -93,21 +93,21 @@ class app_update (
 
   if $agent {
 
-  file { 'app_update.rb':
-    ensure => file,
-    path   => "${mco_dir}/agent/app_update.rb",
-    source => 'puppet:///modules/app_update/app_update.rb',
-  }
+    file { 'app_update.rb':
+      ensure => file,
+      path   => "${mco_dir}/agent/app_update.rb",
+      source => 'puppet:///modules/app_update/app_update.rb',
+    }
 
   }
 
   if $application {
 
-  file { 'app_update_app.rb':
-    ensure => file,
-    path   => "${mco_dir}/application/app_update.rb",
-    source => 'puppet:///modules/app_update/app_update_app.rb',
-  }
+    file { 'app_update_app.rb':
+      ensure => file,
+      path   => "${mco_dir}/application/app_update.rb",
+      source => 'puppet:///modules/app_update/app_update_app.rb',
+    }
 
   }
 

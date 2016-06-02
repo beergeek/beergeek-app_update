@@ -18,11 +18,6 @@ module MCollective
       def startup_hook
         configfile = @config.pluginconf.fetch("puppet.config", nil)
 
-        @puppet_command = @config.pluginconf.fetch("puppet.command", "puppet agent")
-        @puppet_service = @config.pluginconf.fetch("puppet.windows_service", "puppet")
-        @puppet_splaylimit = Integer(@config.pluginconf.fetch("puppet.splaylimit", 30))
-        @puppet_splay = @config.pluginconf.fetch("puppet.splay", "false")
-
         @puppet_agent = Util::PuppetAgentMgr.manager(configfile, @puppet_service)
       end
 
@@ -51,24 +46,31 @@ module MCollective
 
       action 'deploy_app_update' do
         begin
+          # disable Puppet
           control_puppet('disable')
+          # stop the service
           resource_manage('service', request[:service], {'ensure' => 'stopped'})
+          # enable the repo
           resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '1', 'gpgcheck' => '0', 'baseurl' => request[:host]})
+          # upgrade the package
           resource_manage('package', request[:package], {'ensure' => request[:version]})
+          # disable the repo
           resource_manage('yumrepo','app_data',{'ensure' => 'present', 'enabled' => '0', 'gpgcheck' => '0', 'baseurl' => request[:host]})
+          # restart the service
           resource_manage('service', request[:service], {'ensure' => 'running'})
-          reply[:exitcode] = 0
-          # This would call the BuildAPIClient to get the current onbaord codebase version
+          # determine which version is actually installed
           x = ::Puppet::Resource.indirection.find("package/#{request[:package]}")
           if x[:ensure] != 'absent'
             reply[:out] = x[:ensure]
           else
             reply[:out] = 'absent'
           end
+          reply[:exitcode] = 0
         rescue => e
           Log.error(e.to_s)
           reply.fail(reply[:status] = e.to_s)
         ensure
+          # Always ensure Puppet is running
           control_puppet('enable')
         end
       end
