@@ -23,7 +23,7 @@ module MCollective
 
       def control_puppet(state = 'enable')
         begin
-          Log.info("#{state} Puppet")
+          Log.debug("#{state} Puppet")
           if state == 'disable'
             agent_msg = @puppet_agent.disable!
           else
@@ -38,7 +38,7 @@ module MCollective
         begin
           x = ::Puppet::Resource.new(resource_type, resource_name, :parameters => cmd_hash)
           result = ::Puppet::Resource.indirection.save(x)
-          Log.info("#{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{result}")
+          Log.debug("#{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{result}")
         rescue => e
           raise "Could not manage resource of #{resource_type} with the title #{resource_name}: #{e.to_s}"
         end
