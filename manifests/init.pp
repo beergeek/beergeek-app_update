@@ -84,31 +84,41 @@ class app_update (
     notify => Service[$mco_svc],
   }
 
+  if $agent or $application {
+    $enable_ddl = 'file'
+  } else {
+    $enable_ddl = 'absent'
+  }
 
   file { 'app_update.ddl':
-    ensure => file,
+    ensure => $enable_ddl,
     path   => "${mco_dir}/agent/app_update.ddl",
     source => 'puppet:///modules/app_update/app_update.ddl',
   }
 
   if $agent {
+    $enable_agent = 'file'
+  } else {
+    $enable_agent = 'absent'
+  }
 
-    file { 'app_update.rb':
-      ensure => file,
-      path   => "${mco_dir}/agent/app_update.rb",
-      source => 'puppet:///modules/app_update/app_update.rb',
-    }
-
+  file { 'app_update.rb':
+    ensure => $enable_agent,
+    path   => "${mco_dir}/agent/app_update.rb",
+    source => 'puppet:///modules/app_update/app_update.rb',
   }
 
   if $application {
-
-    file { 'app_update_app.rb':
-      ensure => file,
-      path   => "${mco_dir}/application/app_update.rb",
-      source => 'puppet:///modules/app_update/app_update_app.rb',
-    }
-
+    $enable_application = 'file'
+  } else {
+    $enable_application = 'absent'
   }
+
+  file { 'app_update_app.rb':
+    ensure => $enable_application,
+    path   => "${mco_dir}/application/app_update.rb",
+    source => 'puppet:///modules/app_update/app_update_app.rb',
+  }
+
 
 }
