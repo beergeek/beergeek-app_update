@@ -37,10 +37,13 @@ module MCollective
       def resource_manage(resource_type, resource_name, cmd_hash)
         begin
           x = ::Puppet::Resource.new(resource_type, resource_name, :parameters => cmd_hash)
-          result = ::Puppet::Resource.indirection.save(x)
-          Log.debug("#{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{result}")
-        rescue => e
-          raise "Could not manage resource of #{resource_type} with the title #{resource_name}: #{e.to_s}"
+          result, report = ::Puppet::Resource.indirection.save(x)
+          report.finalize_report
+          Log.debug("#{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{report.exit_status}")
+          if report.exit_status == 4
+            Log.error("ERROR: #{cmd_hash} the resource of #{resource_type} with the title #{resource_name}: #{report.exit_status}")
+            raise "ERROR: Could not manage resource of #{resource_type} with the title #{resource_name}: #{report.exit_status}"
+          end
         end
       end
 
@@ -67,8 +70,8 @@ module MCollective
           end
           reply[:exitcode] = 0
         rescue => e
-          Log.error(e.to_s)
-          reply.fail(reply[:status] = e.to_s)
+          Log.error("ERROR: #{e.to_s}")
+          reply.fail(reply[:out] = e.to_s)
         ensure
           # Always ensure Puppet is running
           control_puppet('enable')

@@ -38,7 +38,7 @@ describe 'app_update' do
     }
   end
 
-  context 'with defaults for all parameters on RedHat with PE2015.x' do
+  context 'with defaults for all parameters on RedHat with AIO Agent' do
     let(:facts) {
       {
         :os                 => { 'familt' => 'RedHat'},
